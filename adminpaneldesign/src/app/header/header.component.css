@@ -1,0 +1,39 @@
+.nav-link {
+    margin-right: 10px; /* Spacing between buttons */
+  }
+  
+  .dropdown-menu {
+    min-width: 150px; /* Set a minimum width for dropdowns */
+  }
+  
+  .dropdown-item {
+    transition: background-color 0.3s ease;
+  }
+  
+  .dropdown-item:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light background on hover */
+  }
+  
+  .btn {
+    border-radius: 20px; /* Rounded buttons */
+  }
+  
+  .btn-outline-primary:hover,
+  .btn-outline-secondary:hover,
+  .btn-outline-success:hover,
+  .btn-outline-info:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Change background on hover */
+  }
+  .navbar-nav .nav-link {
+    margin-right: 10px; /* Spacing between buttons */
+  }
+  
+
+
+  .custom-dialog-container {
+    margin: 0 auto; /* Center the dialog */
+    position: fixed; /* Make sure it stays in a fixed position */
+    top: 50px; /* Distance from the top */
+    width: 400px; /* Adjust as needed */
+  }
+  

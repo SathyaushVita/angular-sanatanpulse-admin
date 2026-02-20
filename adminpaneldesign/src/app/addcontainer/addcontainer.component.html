@@ -1,0 +1,185 @@
+
+
+<form [formGroup]="newsForm" (ngSubmit)="onSubmit()" style="margin-top: 100px; max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f9fa;">
+  <h5 class="text-center mb-4  ">Add News</h5>
+  
+  <div class="form-group mb-4">
+      <label class="fw-bold" for="headline">Headline</label>
+      <div>
+        <textarea id="headline" formControlName="headline" class="form-control" placeholder="Enter the Headline" rows="3"></textarea>
+        <div *ngIf="newsForm.get('headline')?.invalid && (newsForm.get('headline')?.dirty || newsForm.get('headline')?.touched)" class="text-danger">
+          Enter the Headline
+        </div>
+      </div> 
+  </div>
+  <!-- short description -->
+   <div class="form-group mb-4">
+    <label for="short_description" class="fw-bold">Short Description</label>
+    <div>
+      <textarea class="form-control" id="short_description" formControlName="short_description" placeholder="Enter the Short Description" rows="3"></textarea>
+      <div *ngIf="newsForm.get('short_description')?.invalid && (newsForm.get('short_description')?.dirty || newsForm.get('short_description')?.touched)" class="text-danger">
+        Enter the short description
+      </div>
+    </div>
+  </div> 
+  
+  <div class="form-group mb-4">
+      <label for="desc" class="fw-bold">Description</label>
+      <div>
+        <textarea class="form-control" id="desc" formControlName="desc" placeholder="Enter the Description" rows="4"></textarea>
+        <div *ngIf="newsForm.get('desc')?.invalid && (newsForm.get('desc')?.dirty || newsForm.get('desc')?.touched)" class="text-danger">
+          Enter the description
+        </div>
+      </div>
+  </div>
+
+
+
+  
+
+  <div class="form-group mb-4 ">
+    <label class="fw-bold " >Upload Image*</label>
+    <nz-upload
+      nzListType="picture-card"
+      [(nzFileList)]="bannerFileList"
+      [nzShowButton]="bannerFileList.length < 1"
+      (nzChange)="handleBannerFileChange($event)"
+      [nzAccept]="'image/*'">
+      <div class="upload-placeholder custom-select" style="border: 2px solid black; border-radius: 8px;width: 100px; color: black;">
+        <i nz-icon nzType="plus" style="font-size: 36px;"></i>
+        <span>Upload Image</span>
+      </div>
+      <!-- <div class="upload-placeholder">
+        <i nz-icon nzType="plus" style="font-size: 24px;"></i>
+        <span>Upload image</span>
+      </div> -->
+    </nz-upload>
+    <div *ngIf="newsForm.get('image_location')?.touched && newsForm.get('image_location')?.invalid" class="text-danger">
+      Image is required.
+    </div>
+  </div>
+
+  <div class="form-group mb-4">
+    <label class="fw-bold">Upload Audio*</label>
+    <nz-upload
+      nzListType="text"
+      [(nzFileList)]="audioFileList"
+      [nzShowButton]="true"
+      (nzChange)="handleAudioFileChange($event)"
+      [nzAccept]="'audio/*'">
+      <div class="upload-placeholder custom-select" style="border: 2px solid black; border-radius: 8px;width: 100px; color: black;">
+        <i nz-icon nzType="upload"></i> Upload Audio
+      </div>
+    </nz-upload>
+    <div *ngIf="newsForm.get('audio_location')?.touched && newsForm.get('audio_location')?.invalid" class="text-danger">
+      Audio is required.
+    </div>
+  </div>
+
+  <!-- <div class="mb-2">
+    <label for="language" class="form-label">Language</label>
+    <select class="form-control" id="language" formControlName="language"
+            [class.is-invalid]="newsForm.get('language')?.touched && newsForm.get('language')?.invalid">
+      <option *ngFor="let option of LanguageOptions" [value]="option.value">{{ option.label }}</option>
+    </select>
+  </div>  -->
+
+  <!-- <div class="form-group mb-4">
+    <label for="desc" class="font-weight-bold">media</label>
+    <div>
+      <textarea class="form-control" id="media" formControlName="media" placeholder="Enter the media" rows="4"></textarea>
+      <div *ngIf="newsForm.get('media')?.invalid && (newsForm.get('media')?.dirty || newsForm.get('media')?.touched)" class="text-danger">
+        Enter the media link
+      </div>
+    </div>
+</div> -->
+
+  <div class="form-group mb-4">
+    <label for="location" class="fw-bold">Location</label>
+    <div>
+      <textarea class="form-control" id="location" formControlName="location" placeholder="Enter the location" rows="3"></textarea>
+      <div *ngIf="newsForm.get('location')?.invalid && (newsForm.get('location')?.dirty || newsForm.get('location')?.touched)" class="text-danger">
+        Location is required.
+      </div>
+    </div>
+  </div>
+
+  
+
+  
+   
+
+  <div class="form-group mb-4">
+    <label for="category" class="fw-bold">Category</label>
+    <div>
+      <select (change)="onCategoryChange($event)" formControlName="category_id" class="form-control custom-select">
+        <option value="" disabled selected>Select a category</option>
+        <option *ngFor="let category of categories" [value]="category._id">
+          {{ category.name }}
+        </option>
+      </select>
+      <div *ngIf="newsForm.get('category_id')?.invalid && (newsForm.get('category_id')?.dirty || newsForm.get('category_id')?.touched)" class="text-danger">
+        Select the Correct Categeory
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group mb-4">
+    <label for="subcategory" class="fw-bold">Subcategory</label>
+    <div>
+      <select formControlName="news_sub_category_id" class="form-control custom-select">
+        <option value="" disabled selected>Select a subcategory</option>
+        <option *ngFor="let subcategory of filteredSubCategories" [value]="subcategory._id">
+          {{ subcategory.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+    <div class="form-group mb-4">
+      <label for="status" class="fw-bold">Status:</label>
+      <div>
+        <select id="status" formControlName="status" class="form-control custom-select">
+          <option value="SUCCESS">Success</option>
+          <option value="PENDING">Pending</option>
+        </select>
+      </div>
+    </div>
+
+  <div class="form-group mb-4">
+    <label for="is_published" class="fw-bold">is_published</label>
+    <div>
+      <select 
+        class="form-control fw-bold" 
+        id="is_published" 
+        formControlName="is_published">
+        <option value="">Select an option</option>
+        <option value="PUBLISHED">PUBLISHED</option>
+        <option value="NOT_PUBLISHED">NOT_PUBLISHED</option>
+      </select>
+      <div 
+        *ngIf="newsForm.get('is_published')?.invalid && (newsForm.get('is_published')?.dirty || newsForm.get('is_published')?.touched)" 
+        class="text-danger">
+        is_published is required.
+      </div>
+    </div>
+  </div>
+  
+
+
+   <div class="form-group mb-4">
+    <label for="published_at" class="fw-bold">Published At</label>
+    <div>
+      <div>
+        <input id="publish_at" formControlName="publish_at" type="datetime-local" />
+      </div>
+      <div *ngIf="newsForm.get('published_at')?.invalid && (newsForm.get('published_at')?.dirty || newsForm.get('published_at')?.touched)" class="text-danger">
+        Published at is required.
+      </div>
+    </div>
+  </div>
+ 
+  <div class="text-center">
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>

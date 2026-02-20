@@ -1,0 +1,179 @@
+
+<div class="container">
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()" style="margin-top: 100px; max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f9fa;">
+      <h2> staging update News form</h2>
+      <div class="form-group">
+        <label for="headline">Headline</label>
+        <input id="headline" formControlName="headline" class="form-control" />
+      </div>
+  
+      <div class="form-group">
+        <label for="desc">Description</label>
+        <textarea id="desc" formControlName="desc" class="form-control"></textarea>
+      </div>
+  
+      <div class="form-group">
+        <label for="short_description">Short Description</label>
+        <textarea id="short_description" formControlName="short_description" class="form-control"></textarea>
+      </div>
+  
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input id="location" formControlName="location" class="form-control" />
+      </div>
+      <!-- <div class="mb-2">
+        <label for="language" class="form-label">Language</label>
+        <select class="form-control" id="language" formControlName="language"
+                [class.is-invalid]="editForm.get('language')?.touched && editForm.get('language')?.invalid">
+          <option *ngFor="let option of LanguageOptions" [value]="option.value">{{ option.label }}</option>
+        </select>
+      </div>  -->
+     <div class="form-group">
+       <div>
+        <label>Category:</label>
+       </div> 
+       <div>
+        <select formControlName="category_id" (change)="onCategoryChange($event)">
+          <option value="" disabled>Select a category</option>
+          <option *ngFor="let category of categories" [value]="category._id">
+            {{ category.name }}
+          </option>
+        </select>
+       </div>
+       
+      
+        <p>Selected Category: {{ getCategoryName(editForm.value.category_id) }}</p>
+      </div>
+  
+      <div class="form-group">
+        <div>
+          <label>Sub-category:</label>
+        </div>
+       <div>
+    <select formControlName="news_sub_category_id" (change)="onSubCategoryChange($event)">
+          <option value="" disabled>Select a subcategory</option>
+          <option *ngFor="let subcategory of filteredSubCategories" [value]="subcategory._id">
+            {{ subcategory.name }}
+          </option>
+        </select>
+       </div>
+    
+        <p>Selected Sub-category: {{ getSubCategoryName(editForm.value.news_sub_category_id) }}</p>
+      </div>
+
+      
+  <div class="form-group mb-4">
+    <label for="is_published" class="font-weight-bold">is_published</label>
+    <div>
+      <select 
+        class="form-control" 
+        id="is_published" 
+        formControlName="is_published">
+        <option value="">Select an option</option>
+        <option value="PUBLISHED">PUBLISHED</option>
+        <option value="NOT_PUBLISHED">NOT_PUBLISHED</option>
+      </select>
+      <div 
+        *ngIf="editForm.get('is_published')?.invalid && (editForm.get('is_published')?.dirty || editForm.get('is_published')?.touched)" 
+        class="text-danger">
+        is_published is required.
+      </div>
+    </div>
+  </div>
+  
+
+
+   <div class="form-group mb-4">
+    <label for="published_at" class="font-weight-bold">Published At</label>
+    <div>
+      <div>
+        <input id="publish_at" formControlName="publish_at" type="datetime-local" />
+      </div>
+      <div *ngIf="editForm.get('published_at')?.invalid && (editForm.get('published_at')?.dirty || editForm.get('published_at')?.touched)" class="text-danger">
+        Published at is required.
+      </div>
+    </div>
+  </div>
+  <div class="form-group mb-4">
+    <label for="status" class="fw-bold">Status:</label>
+    <div>
+      <select id="status" formControlName="status" class="form-control custom-select">
+        <option value="SUCCESS">Success</option>
+        <option value="PENDING">Pending</option>
+      </select>
+    </div>
+  </div>
+      <p>audio</p>
+    <div class="audio-container" (click)="triggerAudioInput()" formControlName="audio_location">
+   
+      <ng-container *ngIf="audioBase64; else defaultAudioTemplate">
+        <audio controls class="audio-preview">
+          <source [src]="'data:audio/mp3;base64,' + audioBase64" type="audio/mp3" />
+          Your browser does not support the audio element.
+        </audio>
+      </ng-container>
+    
+      <ng-template #defaultAudioTemplate>
+        <div class="audio-placeholder">
+          <span class="plus-icon">+</span>
+        </div>
+      </ng-template>
+    
+      
+      <div class="overlay">
+        <span class="edit-icon">+</span>
+      </div>
+    </div>
+    
+    <input
+      id="audio_file"
+      type="file"
+      accept="audio/*"
+      (change)="onAudioFileChange($event)"
+      style="display: none;"
+      #audioInput
+    />
+    
+
+
+    <p>image</p>
+    <div class="profile-pic-container " formControlName="image_location" (click)="triggerFileInput()">
+      
+      <img  
+           [src]="'data:image/jpg;base64,' + profileImage" 
+           alt="Profile Picture" 
+           class="profile-pic"
+           (error)="onImageError($event)"
+           />
+  
+    
+        
+
+   
+      <ng-template #defaultPic>
+        <div class="profile-pic-placeholder">
+          <span class="plus-icon">+</span>
+        </div>
+      </ng-template>
+      
+      <div class="overlay">
+        <span class="edit-icon">+</span>
+      </div>
+    </div>
+  
+    <input
+      id="profile_pic"
+      type="file"
+      accept="image/*"
+      (change)="onFileChange($event)"
+      style="display: none;"
+      #fileInput
+    />
+  
+    <div *ngIf="editForm.controls['image_location'].invalid && editForm.controls['image_location'].touched" class="text-danger">
+      Profile Picture is required.
+    </div>
+ 
+      <button type="submit" class="btn btn-primary">Update News</button>
+    </form>
+  </div>

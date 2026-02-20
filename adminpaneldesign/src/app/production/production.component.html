@@ -1,0 +1,262 @@
+
+
+<div class="container-fluid d-flex justify-content-start mt-2">
+  <button (click)="production()" class="btn btn-warning rounded-pill px-4 me-2" >production news</button>
+  <button (click)="filter()" class="btn btn-warning rounded-pill px-4 me-2" > prodution  filter</button>
+</div>
+
+<div class="scroll-container">
+
+
+
+<ng-template [ngIf]="displayName === 'production'">
+  <div class="container-fluid">
+    <h3 class="text-center">Production Data</h3>
+    
+    <div class="d-flex justify-content-center my-3">
+              <button class="btn btn-outline-primary btn-sm me-2" (click)="fetchproductiondata(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+              <span>Page {{ currentPage }} of {{ totalPages }}</span>
+              <button class="btn btn-outline-primary btn-sm ms-2" (click)="fetchproductiondata(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+            </div>
+
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Headline</th>
+            <th>Short Description</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Category ID</th>
+            <th>Sub-category ID</th>
+            <th>Language</th>
+            <th>is_published</th>
+            <th>publish_at</th>
+            <th>Status</th>
+            <th>Image</th>
+            <th>Audio</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr *ngFor="let news of productionnews">
+            <td>{{ news.headline | slice:0:50 }}...</td>
+            <td>{{ news.short_description | slice:0:50}}...</td>
+            <td>{{ news.desc| slice:0:50}}...</td>
+            <td>{{ news.location }}</td>
+            <td>{{ news.category_id?.name || 'No category' }}</td>
+            <td>{{ news.news_sub_category_id?.name || 'No subcategory' }}</td>
+            <td>{{ news.language }}</td>
+            <td>{{news.is_published}}</td>
+            <td>{{ news.publish_at | date:'dd/MM/yyyy, h:mm a' }}</td>
+            <td>{{ news.status }}</td>
+            
+            <td><img [src]="news.image_location" alt="Image" class="img-fluid" style="max-width: 50px;"></td>
+            <td>  
+              <audio *ngIf="news.audio_location" controls >
+                <source [src]="news.audio_location" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            </td>
+            <td>
+              <div class="btn-group d-flex flex-wrap">
+
+                <button class="btn btn-info btn-sm m-1" (click)="editNews(news._id)">Edit</button>
+                <button class="btn btn-success btn-sm m-1" (click)="updateProduction(news._id)">update</button>
+                <button class="btn btn-primary btn-sm m-1" (click)="view(news._id)">View</button> 
+                <button class="btn btn-danger btn-sm m-1" (click)="deleteProduction(news._id)" >Delete</button>
+                <button class="btn btn-warning btn-sm m-1" (click)="undoFromProductiondb(news._id)">Undo</button>
+              </div>
+              </td>
+
+
+
+
+
+
+              
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+
+
+</div>
+<ng-template [ngIf]="displayName === 'filter'">
+    <div>
+      <h3 style="text-align: center;">filteration</h3>
+    </div>
+     <div style="margin: 15px;">
+     <select (change)="onCategoryChange($event)">
+      <option value="" disabled selected>Select a category</option>
+      <option *ngFor="let category of categories" [value]="category._id">
+        {{ category.name }}
+      </option>
+    </select>
+    
+    <select (change)="onSubCategoryChange($event)">
+      <option value="" disabled selected>Select a subcategory</option>
+      <option *ngFor="let subcategory of filteredSubCategories" [value]="subcategory._id">
+        {{ subcategory.name }}
+      </option>
+    </select> 
+   
+<!-- 
+    <select (change)="onDateFilterChange($event)">
+      <option value="" disabled selected>Select a date filter</option>
+      <option *ngFor="let date of dateFilters" [value]="date.value">{{ date.label }}</option>
+    </select> -->
+    
+    <select (change)="onDateFilterChange($event)">
+      <option *ngFor="let filter of dateFilters" [value]="filter.value">
+          {{ filter.label }}
+      </option>
+  </select>
+    <div *ngIf="selectedDateFilter === 'date_picker'">
+      <input type="date" (change)="onDateSelected($event)" />
+  </div>
+
+  
+   </div>
+   
+   <table class="table table-bordered table-hover">
+   <thead class="table-dark">
+   <tr>
+     <th>Image</th>
+     <th>Headline</th>
+     <th>Short Description</th>
+     <th>Description</th>
+     <th>category</th>
+     <th>subcategory</th>
+     <th>Location</th>
+     <th>Status</th>
+     <th>Language</th>
+     <th>is_published</th>
+     <th>publish_at</th>
+     <th>Audio</th>
+     <th>Actions</th>
+   </tr>
+   </thead>
+   <tbody>
+   <tr *ngFor="let newsItem of filteredNews">
+     <td>
+       <img *ngIf="newsItem.image_location" [src]="newsItem.image_location" alt="{{ newsItem.headline }}" width="100">
+     </td>
+     
+     <!-- <td>{{ newsItem.headline }}</td>
+   
+     <td>{{ newsItem.short_description }}</td>
+   
+    
+     <td>{{ newsItem.desc }}</td> -->
+
+     <td>{{ newsItem.headline | slice:0:50 }}...</td>
+            <td>{{ newsItem.short_description | slice:0:50}}...</td>
+            <td>{{ newsItem.desc| slice:0:50}}...</td> 
+     <td>{{ newsItem.category_id?.name }}</td> 
+     <td>{{ newsItem.news_sub_category_id?.name || 'N/A' }}</td>
+
+     <td>{{ newsItem.location }}</td>
+     
+     
+     <td>{{ newsItem.status }}</td>
+   
+     
+     <td>{{ newsItem.language }}</td>
+     <td>{{newsItem.is_published}}</td>
+     <td>{{ newsItem.publish_at | date:'dd/MM/yyyy, h:mm a' }}</td>
+   
+     <td>
+       <audio *ngIf="newsItem.audio_location" controls>
+         <source [src]="newsItem.audio_location" type="audio/mpeg">
+         Your browser does not support the audio element.
+       </audio>
+     </td>
+     <td>
+      <div class="btn-group d-flex flex-wrap"> 
+        <button class="btn btn-info btn-sm m-1"  (click)="filterview(newsItem._id)">View</button> 
+        <button class="btn btn-primary btn-sm m-1" (click)="deleteProduction(newsItem._id)" >Delete</button>
+        <button  class="btn btn-danger btn-sm m-1" (click)="undoFromProductiondb(newsItem._id)">Undo</button>
+        <button class="btn btn-warning btn-sm m-1" (click)="editNews(newsItem._id)">Edit</button>
+        <button  class="btn btn-success btn-sm m-1" (click)="updateProduction(newsItem._id)">update</button>
+      </div>
+
+     </td>
+
+
+    
+     
+   </tr>
+   </tbody>
+   </table>
+   </ng-template> 
+
+
+
+ 
+    
+   <ng-template [ngIf]="displayName === 'view'">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+          <div class="news-container">
+            <h3 style="text-align: center; margin-bottom: 20px;">News Details</h3>
+            <div class="card">
+              <div class="card-body">
+              
+                <h4 class="card-title">{{ selectedNews.headline }}</h4>
+                <div class="image-container text-center mb-3">
+                  <img *ngIf="selectedNews.image_location" [src]="selectedNews.image_location" alt="Image" class="img-fluid"/>
+                </div>
+                <div *ngIf="selectedNews.audio_location" class="audio-container text-center mb-3">
+                  <audio controls>
+                    <source [src]="selectedNews.audio_location" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+                <p class="card-text"><strong>Short Description:</strong> {{ selectedNews.short_description }}</p>
+                <p class="card-text"><strong>Description:</strong> {{ selectedNews.desc }}</p>
+                <p class="card-text"><strong>Location:</strong> {{ selectedNews.location }}</p>
+                <p class="card-text"><strong>is_published:</strong> {{ selectedNews.is_published }}</p>
+                <p class="card-text"><strong>publish_at:</strong> {{ selectedNews.publish_at | date:'dd/MM/yyyy, h:mm a'  }}</p>
+                
+                <p class="card-text"><strong>Category:</strong> {{ selectedNews.category_id.name }}</p>
+                <p class="card-text"><strong>Sub-category:</strong> {{ selectedNews.news_sub_category_id.name }}</p>
+                <p class="card-text"><strong>Language:</strong> {{ selectedNews.language }}</p>
+                <p class="card-text"><strong>Status:</strong> {{ selectedNews.status }}</p>
+                <!-- <div class="image-container">
+                  <img *ngIf="selectedNews.image_location" [src]="selectedNews.image_location" alt="Image" class="img-fluid" style="height: 50px;width: 50px;"/>
+                </div> -->
+                <!-- <div *ngIf="selectedNews.audio_location" class="audio-container">
+                  <audio controls>
+                    <source [src]="selectedNews.audio_location" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                  </audio>
+                </div> -->
+                <!-- <div class="actions mt-3 mb-4">
+                  <button (click)="deleteProduction(selectedNews._id)" >Delete</button>
+                  <button (click)="undoFromProductiondb(selectedNews._id)">Undo</button>
+                  <button (click)="editNews(selectedNews._id)">Edit</button>
+                  <button (click)="updateProduction(selectedNews._id)">update</button>
+                  <button class="action-button" (click)="backtostaging()">Back</button>
+                </div> -->
+
+                <div class="actions d-flex flex-wrap justify-content-center gap-2 mt-3 mb-4">
+                  <button class="btn btn-secondary" (click)="backtostaging()">Back</button>
+                  <button class="btn btn-primary" (click)="editNews(selectedNews._id)">Edit</button>
+                  <button class="btn btn-success" (click)="updateProduction(selectedNews._id)">Update</button>
+                  <button class="btn btn-danger" (click)="deleteProduction(selectedNews._id)">Delete</button>
+                  <button class="btn btn-warning" (click)="undoFromProductiondb(selectedNews._id)">Undo</button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>

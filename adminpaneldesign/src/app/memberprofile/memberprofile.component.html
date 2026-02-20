@@ -1,0 +1,152 @@
+<div class="">
+  <div class="">
+
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" style="background-color: orange;">
+          <h5 class="card-title text-center">Member Form</h5>
+        </div>
+        <div class="card-body">
+
+
+
+
+          <div class="mb-2">
+            <!-- <label>profile picture *</label> -->
+
+            <div class="profile-pic-container">
+              <nz-upload
+                nzListType="picture-card"
+                [(nzFileList)]="bannerFileList"
+                [nzShowButton]="bannerFileList.length < 1"
+                (nzChange)="handleBannerFileChange($event)"
+                [nzAccept]="'image/*'"
+              >
+                <div class="upload-btn">
+                  <i nz-icon nzType="plus" class="upload-icon"></i>
+                  <div class="upload-text">Upload</div> 
+                </div>
+              </nz-upload>
+            </div>
+            <div *ngIf="profileForm.get('profile_pic')?.touched && profileForm.get('profile_pic')?.invalid" class="text-danger">
+              Image is required.
+            </div>
+          </div>
+          
+          
+          
+
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6 ">
+                <label for="surname" class="form-label">Surname*</label>
+                <input
+                  type="text"
+                  id="surname"
+                  formControlName="surname"
+                  class="form-control"
+                  placeholder="Enter Your Surname"
+                  [class.is-invalid]="profileForm.get('surname')?.touched && profileForm.get('surname')?.invalid" />
+                <div *ngIf="profileForm.get('surname')?.touched && profileForm.get('surname')?.invalid" class="invalid-feedback">
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <label for="full_name" class="form-label">Name*</label>
+                <input
+                  type="text"
+                  id="full_name"
+                  formControlName="full_name"
+                  class="form-control"
+                  placeholder="Enter Your Last Name"
+                  [class.is-invalid]="profileForm.get('full_name')?.touched && profileForm.get('full_name')?.invalid" />
+                <div *ngIf="profileForm.get('full_name')?.touched && profileForm.get('full_name')?.invalid" class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 ">
+                <label for="father_name" class="form-label">Father's Name*</label>
+                <input
+                  type="text"
+                  id="father_name"
+                  formControlName="father_name"
+                  class="form-control"
+                  placeholder="Enter Your Father's Name"
+                  [class.is-invalid]="profileForm.get('father_name')?.touched && profileForm.get('father_name')?.invalid" />
+                <div *ngIf="profileForm.get('father_name')?.touched && profileForm.get('father_name')?.invalid" class="invalid-feedback">
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <!-- <label for="contact_number" class="form-label">Contact Number*</label>
+                <input
+                  type="text"
+                  id="contact_number"
+                  formControlName="contact_number"
+                  class="form-control"
+                  placeholder="Enter Your Contact Number"
+                  [class.is-invalid]="profileForm.get('contact_number')?.touched && profileForm.get('contact_number')?.invalid" />
+                <div *ngIf="profileForm.get('contact_number')?.touched && profileForm.get('contact_number')?.invalid" class="invalid-feedback">
+                </div> -->
+                <label for="contact_number" class="font-weight-bold">Contact Number*</label>
+                <input
+                  id="contact_number"
+                  formControlName="contact_number"
+                  type="number"
+                  class="form-control"
+                  placeholder="Enter your contact number" [class.is-invalid]="profileForm.get('contact_number')?.touched && profileForm.get('contact_number')?.invalid"
+                />
+                <div *ngIf="profileForm.controls['contact_number'].invalid && profileForm.controls['contact_number'].touched" class="text-danger">
+    
+                  <div *ngIf="profileForm.controls['contact_number'].hasError('maxLength')">
+                    Contact Number cannot be more than 10 digits.
+                  </div>
+                  <div *ngIf="profileForm.controls['contact_number'].hasError('pattern')">
+                    Contact Number must be a 10-digit number.
+                  </div>
+                <!-- </div> -->
+              </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 ">
+                <label for="email" class="form-label">Email*</label>
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  class="form-control"
+                  placeholder="Enter Your Email"
+                  [class.is-invalid]="profileForm.get('email')?.touched && profileForm.get('email')?.invalid" />
+                <div *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid" class="invalid-feedback">
+                  <div *ngIf="profileForm.get('email')?.hasError('email')">Enter a valid email address.</div>
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <label for="gender" class="form-label">Gender*</label>
+                <select
+                  id="gender"
+                  formControlName="gender"
+                  class="form-control"
+                  [class.is-invalid]="profileForm.get('gender')?.touched && profileForm.get('gender')?.invalid">
+                  <option value="" disabled selected>Please Select your Gender</option>
+
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                  <option value="OTHER">Other</option>
+                </select>
+
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-3" style="gap: 15px;">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="button" class="btn btn-secondary" (click)="onClose()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

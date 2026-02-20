@@ -1,0 +1,215 @@
+<div class="container-fluid py-4" style="background-color: whitesmoke;">
+
+  <div class="row">
+  <div class="col-12">
+
+    <div class="d-flex justify-content-center flex-wrap gap-2 position-relative w-100">
+      <span class="px-3 py-2 rounded-pill"
+            [ngClass]="selectedHeaderId === '' ? 'bg-primary text-white' : 'bg-light border'"
+            style="cursor:pointer;"
+            (click)="selectedHeaderId = ''; onFilterChange()">
+        All
+      </span>
+
+      <span *ngFor="let item of movieHeaders"
+            class="px-3 py-2 rounded-pill"
+            [ngClass]="selectedHeaderId === item._id ? 'bg-primary text-white' : 'bg-light border'"
+            style="cursor:pointer;"
+            (click)="selectedHeaderId = item._id; onFilterChange()">
+        {{ item.name | titlecase }}
+      </span>
+
+      <button class="btn btn-success ms-auto" (click)="goToAddContent()">
+        + Add Content
+      </button>
+
+
+    </div>
+
+  </div>
+</div>
+
+  <hr class="my-3">
+
+  <div class="row g-3 justify-content-md-end text-md-end">
+    <div class="col-12 col-md-2">
+      <select class="form-select"  [(ngModel)]="selectedPlatformId" (change)="onFilterChange()">
+        <option value="">All Platforms</option>
+        <option *ngFor="let item of moviePlatforms" [value]="item._id">
+          {{ item.name | titlecase }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-12 col-md-2">
+      <select class="form-select" [(ngModel)]="selectedGenerId"  (change)="onFilterChange()">
+        <option value="">All Genres</option>
+        <option *ngFor="let item of movieGeners" [value]="item._id">
+          {{ item.name | titlecase }}
+        </option>
+      </select>
+    </div>
+
+
+        <div class="col-12 col-md-2">
+      <select class="form-select" [(ngModel)]="selectedLanguageId"  (change)="onFilterChange()">
+        <option value="">All Languages</option>
+        <option *ngFor="let item of languages" [value]="item._id">
+          {{ item.name | titlecase }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-12 col-md-2">
+      <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (keyup)="onSearchChange(searchTerm)">
+    </div>
+
+  </div>
+
+
+
+
+<div class="container my-4">
+  <div class="table-responsive" >
+
+    <table class="table table-bordered align-middle">
+
+      <thead class="table-light text-center position-sticky top-0" style="z-index: 10;">
+        <tr>
+          <th style="width: 120px;">Poster</th>
+          <th>Title</th>
+          <th style="white-space: nowrap;">Release Date</th>
+          <th>Platform</th>
+          <th>Cast</th>
+          <th>Trailer</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let movie of moviesList">
+
+          <td class="text-center">
+            <img 
+              [src]="movie.poster ? movie.poster : '../../assets/ottplatform.webp'"
+              alt="poster"
+              class="img-fluid rounded"
+              style="height: 100px; width: 100%; object-fit: fill;"
+              (error)="handleImageError($event)"
+            >
+          </td>
+
+          <td><strong>{{ movie.title }}</strong></td>
+
+          <td class="text-nowrap">{{ movie.release_date }}</td>
+          <!-- <td>
+            <span class="badge bg-primary">{{ movie.platform }}</span>
+          </td> -->
+
+                    <td>
+  <ng-container *ngIf="movie.platform?.name; else noData">
+    <a 
+      [href]="movie.platform?.website" 
+      target="_blank"
+      class="badge bg-primary bg-gradient text-decoration-none"
+    >
+      {{ movie.platform?.name }}
+    </a>
+  </ng-container>
+
+  <ng-template #noData>
+    <span class="text-muted">—</span>
+  </ng-template>
+</td>
+
+          <td>{{ movie.cast }}</td>
+
+          <td class="text-center">
+            <a 
+              *ngIf="movie?.trailer_link"
+              [href]="movie.trailer_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-primary fw-bold text-decoration-underline"
+            >
+              Watch Trailer
+            </a>
+          </td>
+
+
+          <td>
+            <span class="badge bg-primary">{{ movie.status }}</span>
+          </td>
+
+
+
+
+<td class="text-center">
+
+  <div class="d-flex flex-column align-items-center gap-2">
+
+    <!-- TOP BUTTON -->
+    <button 
+      class="btn btn-warning btn-sm"
+      (click)="moveToProduction(movie._id)">
+      <i class="bi bi-upload"></i>
+    </button>
+
+    <!-- SECOND ROW -->
+    <div class="d-flex gap-2">
+
+      <button 
+        class="btn btn-danger btn-sm"
+        (click)="deleteMovie(movie._id)">
+        <i class="bi bi-trash"></i>
+      </button>
+
+      <button 
+        class="btn btn-primary btn-sm"
+        (click)="onEdit(movie._id)">
+        <i class="bi bi-pencil-square"></i>
+      </button>
+
+    </div>
+
+  </div>
+
+</td>
+
+
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+</div>
+
+
+
+  <div class="text-center py-5" *ngIf="moviesList.length === 0">
+    <h5 class="text-muted mb-0">No movies found</h5>
+  </div>
+
+</div>
+
+<!-- <div class="modal fade" id="trailerModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">{{ selectedMovieTitle }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <video 
+          *ngIf="safeTrailerUrl" 
+          [src]="safeTrailerUrl" 
+          controls 
+          style="width:100%; height:350px;">
+        </video>
+      </div>
+
+    </div>
+  </div>
+</div> -->

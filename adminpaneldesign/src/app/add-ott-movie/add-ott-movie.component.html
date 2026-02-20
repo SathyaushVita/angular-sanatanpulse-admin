@@ -1,0 +1,283 @@
+
+<!-- 
+<form [formGroup]="movieForm" (ngSubmit)="onSubmit()" style="margin-top: 100px; max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f9fa;">
+  <h5 class="text-center mb-4  ">Add Content</h5>
+  
+  <div class="form-group mb-4">
+      <label class="fw-bold" for="title">Title</label>
+      <div>
+        <textarea id="title" formControlName="title" class="form-control" placeholder="Enter the title" ></textarea>
+        <div *ngIf="movieForm.get('title')?.invalid && (movieForm.get('title')?.dirty || movieForm.get('title')?.touched)" class="text-danger">
+          Enter the Title
+        </div>
+      </div> 
+  </div>
+
+  
+  <div class="form-group mb-4">
+      <label for="release_date" class="fw-bold">Release Date</label>
+      <div>
+        <textarea class="form-control" id="release_date" formControlName="release_date" placeholder="Enter the release_date" ></textarea>
+        <div *ngIf="movieForm.get('release_date')?.invalid && (movieForm.get('release_date')?.dirty || movieForm.get('release_date')?.touched)" class="text-danger">
+          Enter the Release Date
+        </div>
+      </div>
+  </div>
+
+  <div class="form-group mb-4">
+    <label for="cast" class="fw-bold">Cast</label>
+    <div>
+      <textarea class="form-control" id="cast" formControlName="cast" placeholder="Enter the cast" rows="3"></textarea>
+      <div *ngIf="movieForm.get('cast')?.invalid && (movieForm.get('cast')?.dirty || movieForm.get('cast')?.touched)" class="text-danger">
+        Cast is required.
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="form-group mb-4">
+    <label for="category" class="fw-bold">Category</label>
+    <div>
+      <select  formControlName="header_id" class="form-control custom-select">
+        <option value="" disabled selected>Select a category</option>
+        <option *ngFor="let category of categories" [value]="category._id">
+          {{ category.name }}
+        </option>
+      </select>
+      <div *ngIf="movieForm.get('header_id')?.invalid && (movieForm.get('header_id')?.dirty || movieForm.get('header_id')?.touched)" class="text-danger">
+        Select the Correct Categeory
+      </div>
+    </div>
+  </div>
+
+
+
+    <div class="form-group mb-4">
+    <label for="category" class="fw-bold">platforms</label>
+    <div>
+      <select  formControlName="platform_id" class="form-control custom-select">
+        <option value="" disabled selected>Select a platforms</option>
+        <option *ngFor="let category of platforms" [value]="category._id">
+          {{ category.name }}
+        </option>
+      </select>
+      <div *ngIf="movieForm.get('header_id')?.invalid && (movieForm.get('header_id')?.dirty || movieForm.get('header_id')?.touched)" class="text-danger">
+        Select the Correct Categeory
+      </div>
+    </div>
+  </div>
+
+
+    <div class="form-group mb-4">
+    <label for="generes" class="fw-bold">Generes</label>
+    <div>
+      <select  formControlName="geners_id" class="form-control custom-select">
+        <option value="" disabled selected>Select a Generes</option>
+        <option *ngFor="let category of generes" [value]="category._id">
+          {{ category.name }}
+        </option>
+      </select>
+      <div *ngIf="movieForm.get('header_id')?.invalid && (movieForm.get('header_id')?.dirty || movieForm.get('header_id')?.touched)" class="text-danger">
+        Select the Correct Categeory
+      </div>
+    </div>
+  </div>
+
+
+
+    <div class="form-group mb-4">
+      <label for="status" class="fw-bold">Status:</label>
+      <div>
+        <select id="status" formControlName="status" class="form-control custom-select">
+          <option value="SUCCESS">Success</option>
+          <option value="PENDING">Pending</option>
+        </select>
+      </div>
+    </div>
+
+
+      <div class="form-group mb-4 ">
+    <label class="fw-bold " >Upload Image*</label>
+    <nz-upload
+      nzListType="picture-card"
+      [(nzFileList)]="bannerFileList"
+      [nzShowButton]="bannerFileList.length < 1"
+      (nzChange)="handleBannerFileChange($event)"
+      [nzAccept]="'image/*'">
+      <div class="upload-placeholder custom-select" style="border: 2px solid black; border-radius: 8px;width: 100px; color: black;">
+        <i nz-icon nzType="plus" style="font-size: 36px;"></i>
+        <span>Upload Image</span>
+      </div>
+    </nz-upload>
+    <div *ngIf="movieForm.get('poster')?.touched && movieForm.get('poster')?.invalid" class="text-danger">
+      Image is required.
+    </div>
+  </div>
+
+    <div class="col-md-4">
+        <label>Upload video *</label>
+        <div class="form-group">
+        <nz-upload
+        class="video-container"
+        nzListType="text"
+        [(nzFileList)]="videoFileList"
+        [nzShowButton]="videoFileList.length < 1"
+        (nzChange)="handleVideoFileChange($event)"
+        [nzAccept]="'video/*'"
+        (nzRemove)="handleVideoFileRemove()"
+        >
+        <div style="width: 100%; height: 100px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px dashed #d9d9d9; padding: 10px;">
+            <i nz-icon nzType="plus"></i> Upload Video
+        </div>
+        </nz-upload>
+        </div>
+        <div
+        *ngIf="movieForm.get('trailer')?.touched && movieForm.get('trailer')?.invalid"
+        class="text-danger"
+        >
+        Video is required.
+        </div>
+    </div>
+ 
+  <div class="text-center">
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form> -->
+
+
+<form [formGroup]="movieForm" (ngSubmit)="onSubmit()" 
+      class="container mt-3 p-4 border rounded bg-light shadow-sm" 
+      style="max-width: 900px;">
+
+  <h4 class="text-center mb-4 fw-bold">Add Content</h4>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold">Title</label>
+    <textarea formControlName="title" class="form-control" placeholder="Enter the title"></textarea>
+    <small *ngIf="movieForm.get('title')?.invalid && movieForm.get('title')?.touched" class="text-danger">
+      Enter the Title
+    </small>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold">Release Date</label>
+    <input type="text" formControlName="release_date" class="form-control" placeholder="Enter the Release Date"/>
+    <small *ngIf="movieForm.get('release_date')?.invalid && movieForm.get('release_date')?.touched" class="text-danger">
+      Enter Release Date
+    </small>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold">Cast</label>
+    <textarea formControlName="cast" class="form-control" placeholder="Enter cast" rows="3"></textarea>
+    <small *ngIf="movieForm.get('cast')?.invalid && movieForm.get('cast')?.touched" class="text-danger">
+      Cast is required.
+    </small>
+  </div>
+
+    <div class="mb-3">
+    <label class="form-label fw-bold">Trailer link</label>
+    <input type="text" formControlName="trailer_link" class="form-control" placeholder="Enter the Trailer link"/>
+    <small *ngIf="movieForm.get('trailer_link')?.invalid && movieForm.get('trailer_link')?.touched" class="text-danger">
+      Enter Trailer link
+    </small>
+  </div>
+
+  <div class="row mb-3">
+
+    <div class="col-md-4 mb-3 mb-md-0">
+      <label class="form-label fw-bold">Category</label>
+      <select formControlName="header_id" class="form-select">
+        <option value="">Select Category</option>
+        <option *ngFor="let c of categories" [value]="c._id">{{ c.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-4 mb-3 mb-md-0">
+      <label class="form-label fw-bold">Platforms</label>
+      <select formControlName="platform_id" class="form-select">
+        <option value="">Select Platform</option>
+        <option *ngFor="let p of platforms" [value]="p._id">{{ p.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label fw-bold">Generes</label>
+      <select formControlName="geners_id" class="form-select">
+        <option value="">Select Generes</option>
+        <option *ngFor="let g of generes" [value]="g._id">{{ g.name }}</option>
+      </select>
+    </div>
+
+  </div>
+
+      <div class="mb-3">
+      <label class="form-label fw-bold">Language</label>
+      <select formControlName="language" class="form-select">
+        <option value="">Select Language</option>
+        <option *ngFor="let l of languages" [value]="l._id">{{ l.name }}</option>
+      </select>
+    </div>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold">Status</label>
+    <select formControlName="status" class="form-select">
+      <option value="SUCCESS">Success</option>
+      <option value="STAGING">Staging</option>
+      <option value="PRODUCTION">Production</option>
+
+    </select>
+  </div>
+
+  <div class="row mt-4">
+
+    <div class="col-md-6 mb-4">
+      <label class="fw-bold">Upload Image *</label>
+      <nz-upload
+        nzListType="picture-card"
+        [(nzFileList)]="bannerFileList"
+        [nzShowButton]="bannerFileList.length < 1"
+        (nzChange)="handleBannerFileChange($event)"
+        [nzAccept]="'image/*'">
+
+        <div class="text-center p-3 border rounded" style="cursor:pointer;">
+          <i nz-icon nzType="plus" style="font-size: 30px;"></i>
+          <p>Upload Image</p>
+        </div>
+
+      </nz-upload>
+      <small *ngIf="movieForm.get('poster')?.touched && movieForm.get('poster')?.invalid" class="text-danger">
+        Image is required.
+      </small>
+    </div>
+
+    <!-- <div class="col-md-6 mb-4">
+      <label class="fw-bold">Upload Video *</label>
+
+      <nz-upload
+        nzListType="text"
+        [(nzFileList)]="videoFileList"
+        [nzShowButton]="videoFileList.length < 1"
+        (nzChange)="handleVideoFileChange($event)"
+        [nzAccept]="'video/*'"
+        (nzRemove)="handleVideoFileRemove()">
+
+        <div class="d-flex align-items-center justify-content-center border rounded"
+             style="height: 120px; cursor: pointer;">
+          <i nz-icon nzType="plus"></i> &nbsp; Upload Video
+        </div>
+
+      </nz-upload>
+
+      <small *ngIf="movieForm.get('trailer')?.touched && movieForm.get('trailer')?.invalid" class="text-danger">
+        Video is required.
+      </small>
+    </div> -->
+
+  </div>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary px-5 py-2">Submit</button>
+  </div>
+
+</form>

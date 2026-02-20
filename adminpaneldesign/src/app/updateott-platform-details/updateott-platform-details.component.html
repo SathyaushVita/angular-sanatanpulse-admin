@@ -1,0 +1,85 @@
+
+
+<form [formGroup]="profileForm" (ngSubmit)="updateProfile()" 
+      class="container mt-3 p-4 border rounded bg-light shadow-sm"
+      style="max-width: 900px;">
+
+  <h4 class="text-center mb-4 fw-bold">Update Content</h4>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold">Title</label>
+    <textarea formControlName="title" class="form-control"></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold">Release Date</label>
+    <input type="text" class="form-control" formControlName="release_date" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold">Cast</label>
+    <textarea formControlName="cast" class="form-control"></textarea>
+  </div>
+
+      <div class="mb-3">
+    <label class="form-label fw-bold">Trailer link</label>
+    <input type="text" formControlName="trailer_link" class="form-control" placeholder="Enter the Trailer link"/>
+
+  </div>
+
+  <div class="row mb-3">
+
+    <div class="col-md-4">
+      <label class="form-label fw-bold">Category</label>
+      <select class="form-select" formControlName="header_id">
+        <option value="">Select Category</option>
+        <option *ngFor="let c of categories" [value]="c._id">{{ c.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label fw-bold">Platforms</label>
+      <select class="form-select" formControlName="platform_id">
+        <option value="">Select Platform</option>
+        <option *ngFor="let p of platforms" [value]="p._id">{{ p.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label fw-bold">Generes</label>
+      <select class="form-select" formControlName="geners_id">
+        <option value="">Select Genre</option>
+        <option *ngFor="let g of generes" [value]="g._id">{{ g.name }}</option>
+      </select>
+    </div>
+
+  </div>
+
+        <div class="mb-3">
+      <label class="form-label fw-bold">Language</label>
+      <select formControlName="language" class="form-select">
+        <option value="">Select Language</option>
+        <option *ngFor="let l of languages" [value]="l._id">{{ l.name }}</option>
+      </select>
+    </div>
+
+  <div class="form-group">
+    <div class="profile-pic-container" (click)="triggerFileInput()">
+ <img [src]="'data:image/jpeg;base64,' + profileImage"
+     class="profile-pic"
+     (error)="onImageError($event)">
+
+
+      <div class="overlay"><span class="edit-icon">+</span></div>
+    </div>
+
+    <input id="poster" type="file" accept="image/*"
+           (change)="onFileChange($event)" style="display:none;" />
+  </div>
+
+  <div class="text-center mt-3">
+    <button class="btn btn-primary px-5 py-2" type="submit">Submit</button>
+  </div>
+
+</form>
+
